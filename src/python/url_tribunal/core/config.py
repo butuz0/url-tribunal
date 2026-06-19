@@ -6,6 +6,15 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+class FlaskSettings(BaseSettings):
+    """Flask specific configuration."""
+
+    model_config = SettingsConfigDict(env_prefix='FLASK_')
+
+    debug: bool = False
+    secret_key: str
+
+
 class DBSettings(BaseSettings):
     """Database connection settings."""
 
@@ -28,11 +37,12 @@ class Settings(BaseSettings):
         extra='ignore',
     )
 
+    flask: FlaskSettings = Field(default_factory=FlaskSettings)
     db: DBSettings = Field(default_factory=DBSettings)
 
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
-    """Factory function for loading settings."""
+    """Factory function to safely load settings without import-time side effects."""
 
     return Settings()
