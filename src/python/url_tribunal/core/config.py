@@ -1,4 +1,4 @@
-"""Application configuration management using Pydantic Settings v2."""
+"""Application configuration settings."""
 
 from functools import lru_cache
 
@@ -43,6 +43,6 @@ class Settings(BaseSettings):
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
-    """Factory function to safely load settings without import-time side effects."""
+    """Factory function for settings loading."""
 
     return Settings()
