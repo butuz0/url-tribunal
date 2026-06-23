@@ -5,11 +5,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import url_tribunal.db.models  # noqa
 from url_tribunal.core.config import get_settings
 from url_tribunal.db.base import Base
-from url_tribunal.db.models.domain import Domain
-from url_tribunal.db.models.url import URL
-from url_tribunal.db.models.url_scan import URLScan
 
 config = context.config
 

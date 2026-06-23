@@ -39,7 +39,7 @@ class URL(Base):
     last_scanned_at: Mapped[Optional[dt.datetime]] = mapped_column(default=None)
 
     domain: Mapped['Domain'] = relationship(back_populates='urls')
-    scans: Mapped[list['URLScan']] = relationship(
+    scans: Mapped[list['Scan']] = relationship(
         back_populates='url',
         cascade='all, delete-orphan',
     )
