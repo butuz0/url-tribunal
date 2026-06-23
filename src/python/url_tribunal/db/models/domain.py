@@ -2,13 +2,10 @@
 
 import datetime as dt
 
-from sqlalchemy import (
-    String,
-    Enum as SqlEnum,
-    func,
-)
-from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy.orm import mapped_column
+from sqlalchemy import CheckConstraint
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import Float, String, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from url_tribunal.core.enums import Verdict
 from url_tribunal.db.base import Base
@@ -28,6 +25,13 @@ class Domain(Base):
             values_callable=lambda enum: [member.value for member in enum],
         ),
         server_default=Verdict.UNKNOWN.value,
+    )
+    verdict_confidence: Mapped[float | int] = mapped_column(
+        Float(precision=2),
+        CheckConstraint(
+            'verdict_confidence >= 0 AND verdict_confidence <= 1',
+            name='check_verdict_confidence_range',
+        ),
     )
     created_at: Mapped[dt.datetime] = mapped_column(
         server_default=func.now(),

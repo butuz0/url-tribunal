@@ -3,14 +3,10 @@
 import datetime as dt
 from typing import Optional
 
-from sqlalchemy import (
-    String,
-    Text,
-    Enum as SqlEnum,
-    ForeignKey,
-)
-from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy.orm import mapped_column
+from sqlalchemy import CheckConstraint
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import Float, ForeignKey, String, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from url_tribunal.core.enums import Verdict
 from url_tribunal.db.base import Base
@@ -32,6 +28,13 @@ class URL(Base):
             values_callable=lambda enum: [member.value for member in enum],
         ),
         server_default=Verdict.UNKNOWN.value,
+    )
+    verdict_confidence: Mapped[float | int] = mapped_column(
+        Float(precision=2),
+        CheckConstraint(
+            'verdict_confidence >= 0 AND verdict_confidence <= 1',
+            name='check_verdict_confidence_range',
+        ),
     )
     last_scanned_at: Mapped[Optional[dt.datetime]] = mapped_column(default=None)
 
