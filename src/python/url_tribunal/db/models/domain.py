@@ -4,7 +4,7 @@ import datetime as dt
 
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Enum as SqlEnum
-from sqlalchemy import Float, String, func
+from sqlalchemy import Float, String, func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from url_tribunal.core.enums import Verdict
@@ -32,6 +32,7 @@ class Domain(Base):
             'verdict_confidence >= 0 AND verdict_confidence <= 1',
             name='check_verdict_confidence_range',
         ),
+        server_default=text('0.0'),
     )
     created_at: Mapped[dt.datetime] = mapped_column(
         server_default=func.now(),

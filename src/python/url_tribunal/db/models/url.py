@@ -5,7 +5,7 @@ from typing import Optional
 
 from sqlalchemy import CheckConstraint
 from sqlalchemy import Enum as SqlEnum
-from sqlalchemy import Float, ForeignKey, String, Text
+from sqlalchemy import Float, ForeignKey, String, Text, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from url_tribunal.core.enums import Verdict
@@ -35,6 +35,7 @@ class Url(Base):
             'verdict_confidence >= 0 AND verdict_confidence <= 1',
             name='check_verdict_confidence_range',
         ),
+        server_default=text('0.0'),
     )
     last_scanned_at: Mapped[Optional[dt.datetime]] = mapped_column(default=None)
 
