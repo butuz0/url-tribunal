@@ -1,7 +1,7 @@
 """add domain, url, scan and provider scan tables
 
 Revision ID: 1fa03da559b6
-Revises: 
+Revises:
 Create Date: 2026-06-23 09:13:37.912236
 
 """
@@ -52,6 +52,7 @@ def upgrade() -> None:
         'scan',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('url_id', sa.Integer(), nullable=False),
+        sa.Column('status', sa.Enum('pending', 'completed', 'failed', name='scanstatus'), nullable=False),
         sa.Column('scanned_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
         sa.ForeignKeyConstraint(['url_id'], ['url.id'], ondelete='CASCADE'),
         sa.PrimaryKeyConstraint('id'),

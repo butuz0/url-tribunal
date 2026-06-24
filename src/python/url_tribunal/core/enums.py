@@ -10,3 +10,11 @@ class Verdict(StrEnum):
     SPAM = 'spam'
     MALWARE = 'malware'
     UNKNOWN = 'unknown'
+
+
+class ScanStatus(StrEnum):
+    """Status of the security scan execution."""
+
+    PENDING = 'pending'
+    COMPLETED = 'completed'
+    FAILED = 'failed'
