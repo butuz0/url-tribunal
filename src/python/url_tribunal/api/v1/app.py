@@ -1,3 +1,5 @@
+"""Flask application factory."""
+
 from typing import Optional
 
 from flask import Flask
@@ -12,6 +14,8 @@ from url_tribunal.db.session import (
 
 
 def create_app(settings: Optional[Settings] = None) -> Flask:
+    """Initialize and configure the Flask application."""
+
     app = Flask(__name__)
 
     if settings is None:
@@ -34,5 +38,7 @@ def create_app(settings: Optional[Settings] = None) -> Flask:
         return {'status': 'ok'}, 200
 
     register_error_handlers(app)
+
+    app.register_blueprint(url_bp)
 
     return app
