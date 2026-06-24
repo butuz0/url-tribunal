@@ -41,7 +41,7 @@ class Domain(Base):
         onupdate=func.now(),
     )
 
-    urls: Mapped[list['URL']] = relationship(
+    urls: Mapped[list['Url']] = relationship(
         back_populates='domain',
         cascade='all, delete-orphan',
     )

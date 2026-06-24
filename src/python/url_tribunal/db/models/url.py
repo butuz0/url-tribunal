@@ -12,7 +12,7 @@ from url_tribunal.core.enums import Verdict
 from url_tribunal.db.base import Base
 
 
-class URL(Base):
+class Url(Base):
     """Represents a URL string, identified by its SHA-256 hash."""
 
     __tablename__ = 'url'
