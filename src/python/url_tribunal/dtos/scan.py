@@ -1,0 +1,25 @@
+"""Data Transfer Objects for Scan entity."""
+
+import datetime as dt
+
+from pydantic import BaseModel, ConfigDict
+
+from url_tribunal.core.enums import ScanStatus
+from url_tribunal.dtos import ProviderScanDTO
+
+
+class ScanDTO(BaseModel):
+    """Scan Data Transfer Object."""
+
+    model_config = ConfigDict(from_attributes=True, frozen=True)
+
+    id: int
+    url_id: int
+    status: ScanStatus
+    scanned_at: dt.datetime
+
+
+class ScanDetailDTO(ScanDTO):
+    """Scan with provider results Data Transfer Object."""
+
+    provider_scans: list[ProviderScanDTO] = []
