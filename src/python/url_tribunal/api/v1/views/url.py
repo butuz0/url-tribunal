@@ -4,8 +4,8 @@ from flask import Blueprint, Response, abort, jsonify
 from flask.views import MethodView
 
 from url_tribunal.api.v1.dependencies import get_db_session
-from url_tribunal.api.v1.schemas.url import UrlSchema
-from url_tribunal.db.repositories.url import UrlRepository
+from url_tribunal.api.v1.schemas import UrlSchema
+from url_tribunal.db.repositories import UrlRepository
 from url_tribunal.utils import like_sha256
 
 url_bp = Blueprint('urls', __name__, url_prefix='/api/v1/urls')

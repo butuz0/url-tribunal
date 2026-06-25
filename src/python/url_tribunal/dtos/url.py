@@ -4,6 +4,7 @@ import datetime as dt
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
+
 from url_tribunal.core.enums import Verdict
 
 

@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from url_tribunal.db.models import Url
-from url_tribunal.dtos.url import UrlDTO
+from url_tribunal.dtos import UrlDTO
 
 
 class UrlRepository:
