@@ -26,3 +26,16 @@ class ScanRepository:
         scan = self._session.scalars(stmt).unique().first()
 
         return ScanDetailDTO.model_validate(scan) if scan else None
+
+    def list_by_url_hash(self, url_hash: str) -> list[ScanDTO]:
+        """Fetch all scans for a specific URL."""
+
+        stmt = (
+            select(Scan)
+            .join(Url)
+            .where(Url.url_hash == url_hash)
+            .order_by(Scan.scanned_at.desc())
+        )
+        scans = self._session.scalars(stmt).all()
+
+        return [ScanDTO.model_validate(scan) for scan in scans]
