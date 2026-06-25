@@ -11,11 +11,11 @@ from url_tribunal.core.enums import Verdict
 class UrlSchema(BaseModel):
     """API response schema for URL security status."""
 
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, from_attributes=True)
 
     id: int
-    hash: str
+    url_hash: str
     full_url: str
     verdict: Verdict
-    confidence: float | int
+    verdict_confidence: float | int
     last_scanned_at: Optional[dt.datetime] = None

@@ -26,15 +26,7 @@ class Urls(MethodView):
             if url is None:
                 abort(404, description='Target URL string hash not found.')
 
-            response = UrlSchema(
-                id=url.id,
-                hash=url.url_hash,
-                full_url=url.full_url,
-                verdict=url.verdict,
-                confidence=url.verdict_confidence,
-                last_scanned_at=url.last_scanned_at,
-            )
-
+            response = UrlSchema.model_validate(url)
             return jsonify(response.model_dump()), 200
 
 
