@@ -2,11 +2,11 @@
 
 import datetime as dt
 
-from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import Enum as SqlEnum, Float, CheckConstraint, text
 from sqlalchemy import ForeignKey, Index, desc, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from url_tribunal.core.enums import ScanStatus
+from url_tribunal.core.enums import ScanStatus, Verdict
 from url_tribunal.db.base import Base
 
 
@@ -30,7 +30,19 @@ class Scan(Base):
             ScanStatus,
             values_callable=lambda enum: [member.value for member in enum],
         ),
-        default=ScanStatus.PENDING.value,
+        server_default=ScanStatus.PENDING.value,
+    )
+    verdict: Mapped[Verdict] = mapped_column(
+        SqlEnum(Verdict, values_callable=lambda e: [m.value for m in e]),
+        server_default=Verdict.UNKNOWN.value,
+    )
+    verdict_confidence: Mapped[float] = mapped_column(
+        Float(precision=2),
+        CheckConstraint(
+            'verdict_confidence >= 0.0 AND verdict_confidence <= 1.0',
+            name='check_scan_verdict_confidence_range',
+        ),
+        server_default=text('0.0'),
     )
     scanned_at: Mapped[dt.datetime] = mapped_column(server_default=func.now())
 

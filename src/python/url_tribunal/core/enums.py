@@ -13,8 +13,18 @@ class Verdict(StrEnum):
 
 
 class ScanStatus(StrEnum):
-    """Status of the security scan execution."""
+    """Status of a security scan execution."""
 
     PENDING = 'pending'
+    PROCESSING = 'processing'
+    COMPLETED = 'completed'
+    FAILED = 'failed'
+
+
+class ProviderStatus(StrEnum):
+    """Status of a provider security scan."""
+
+    PENDING = 'pending'
+    POLLING = 'polling'
     COMPLETED = 'completed'
     FAILED = 'failed'

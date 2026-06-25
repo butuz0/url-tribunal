@@ -4,7 +4,7 @@ import datetime as dt
 
 from pydantic import BaseModel, ConfigDict
 
-from url_tribunal.core.enums import ScanStatus
+from url_tribunal.core.enums import ScanStatus, Verdict
 from url_tribunal.dtos import ProviderScanDTO
 
 
@@ -16,6 +16,8 @@ class ScanDTO(BaseModel):
     id: int
     url_id: int
     status: ScanStatus
+    verdict: Verdict
+    verdict_confidence: float
     scanned_at: dt.datetime
 
 

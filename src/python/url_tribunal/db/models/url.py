@@ -29,7 +29,7 @@ class Url(Base):
         ),
         server_default=Verdict.UNKNOWN.value,
     )
-    verdict_confidence: Mapped[float | int] = mapped_column(
+    verdict_confidence: Mapped[float] = mapped_column(
         Float(precision=2),
         CheckConstraint(
             'verdict_confidence >= 0 AND verdict_confidence <= 1',

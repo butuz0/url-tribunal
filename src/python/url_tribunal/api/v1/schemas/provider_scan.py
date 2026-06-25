@@ -4,7 +4,7 @@ from typing import Optional, Any
 
 from pydantic import BaseModel, ConfigDict
 
-from url_tribunal.core.enums import Verdict
+from url_tribunal.core.enums import ProviderStatus, Verdict
 
 
 class ProviderScanSchema(BaseModel):
@@ -14,5 +14,7 @@ class ProviderScanSchema(BaseModel):
 
     id: int
     provider_name: str
+    external_reference_id: Optional[str] = None
+    status: ProviderStatus
     verdict: Verdict
     response: Optional[dict[str, Any]]
