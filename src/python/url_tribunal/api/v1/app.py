@@ -8,10 +8,7 @@ from url_tribunal.api.v1.errors import register_error_handlers
 from url_tribunal.api.v1.views.scan import scan_bp
 from url_tribunal.api.v1.views.url import url_bp
 from url_tribunal.core.config import Settings, get_settings
-from url_tribunal.db.session import (
-    create_sync_db_engine,
-    create_sync_session_factory,
-)
+from url_tribunal.db.session import init_database
 
 
 def create_app(settings: Optional[Settings] = None) -> Flask:
@@ -25,10 +22,7 @@ def create_app(settings: Optional[Settings] = None) -> Flask:
     app.config['SETTINGS'] = settings
     app.config['SECRET_KEY'] = settings.flask.secret_key
 
-    engine = create_sync_db_engine(settings.db)
-    session_factory = create_sync_session_factory(engine)
-
-    app.config['DB_SESSION_FACTORY'] = session_factory
+    init_database(settings.db)
 
     @app.teardown_appcontext
     def shutdown_session(exception=None) -> None:

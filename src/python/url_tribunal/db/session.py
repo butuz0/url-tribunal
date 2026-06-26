@@ -1,13 +1,47 @@
 """SQLAlchemy database setup."""
 
+from contextlib import contextmanager
+from typing import Generator
+
 from sqlalchemy import URL, create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from url_tribunal.core.config import DBSettings
 
+_session_factory: sessionmaker[Session] | None = None
 
-def create_sync_db_engine(settings: DBSettings) -> Engine:
+
+def init_database(settings: DBSettings) -> None:
+    """Initialize the global session factory."""
+
+    global _session_factory
+
+    if _session_factory is not None:
+        return
+
+    db = _create_sync_db_engine(settings)
+    _session_factory = _create_sync_session_factory(db)
+
+
+@contextmanager
+def get_db_session() -> Generator[Session, None, None]:
+    """Yield a database session from the global session factory."""
+
+    if _session_factory is None:
+        raise RuntimeError('Database session factory is not initialized.')
+
+    session: Session = _session_factory()
+    try:
+        yield session
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+
+def _create_sync_db_engine(settings: DBSettings) -> Engine:
     """Create a synchronous SQLAlchemy engine configured for MySQL."""
 
     database_url = URL.create(
@@ -32,7 +66,7 @@ def create_sync_db_engine(settings: DBSettings) -> Engine:
     )
 
 
-def create_sync_session_factory(engine: Engine) -> sessionmaker[Session]:
+def _create_sync_session_factory(engine: Engine) -> sessionmaker[Session]:
     """Create a session factory for the provided engine."""
 
     return sessionmaker(
