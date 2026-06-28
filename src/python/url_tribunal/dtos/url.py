@@ -18,5 +18,5 @@ class UrlDTO(BaseModel):
     url_hash: str = Field(min_length=64, max_length=64)
     full_url: str
     verdict: Verdict
-    verdict_confidence: float | int = Field(ge=0.0, le=1.0)
+    verdict_confidence: float = Field(ge=0.0, le=1.0)
     last_scanned_at: Optional[dt.datetime] = None
