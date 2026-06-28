@@ -15,6 +15,13 @@ class FlaskSettings(BaseSettings):
     secret_key: str
 
 
+class ProvidersSettings(BaseSettings):
+    """Security scan providers configuration."""
+
+    virustotal_api_key: str
+    urlscan_api_key: str
+
+
 class DBSettings(BaseSettings):
     """Database connection settings."""
 
@@ -39,6 +46,7 @@ class Settings(BaseSettings):
 
     flask: FlaskSettings = Field(default_factory=FlaskSettings)
     db: DBSettings = Field(default_factory=DBSettings)
+    providers: ProvidersSettings = Field(default_factory=ProvidersSettings)
 
 
 @lru_cache(maxsize=1)
