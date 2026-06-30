@@ -58,7 +58,7 @@ def upgrade() -> None:
                   server_default='unknown', nullable=False),
         sa.Column('verdict_confidence', sa.Float(precision=2), server_default=sa.text('0.0'),
                   nullable=False),
-        sa.Column('scanned_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+        sa.Column('scanned_at', sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(['url_id'], ['url.id'], ondelete='CASCADE'),
         sa.PrimaryKeyConstraint('id'),
     )

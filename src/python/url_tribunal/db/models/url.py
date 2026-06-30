@@ -37,7 +37,7 @@ class Url(Base):
         ),
         server_default=text('0.0'),
     )
-    last_scanned_at: Mapped[Optional[dt.datetime]] = mapped_column(default=None)
+    last_scanned_at: Mapped[Optional[dt.datetime]]
 
     domain: Mapped['Domain'] = relationship(back_populates='urls')
     scans: Mapped[list['Scan']] = relationship(

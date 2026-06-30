@@ -1,9 +1,11 @@
 """Database ORM model for security scan sessions."""
 
 import datetime as dt
+from typing import Optional
 
-from sqlalchemy import Enum as SqlEnum, Float, CheckConstraint, text
-from sqlalchemy import ForeignKey, Index, desc, func
+from sqlalchemy import CheckConstraint
+from sqlalchemy import Enum as SqlEnum
+from sqlalchemy import Float, ForeignKey, Index, desc, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from url_tribunal.core.enums import ScanStatus, Verdict
@@ -44,7 +46,7 @@ class Scan(Base):
         ),
         server_default=text('0.0'),
     )
-    scanned_at: Mapped[dt.datetime] = mapped_column(server_default=func.now())
+    scanned_at: Mapped[Optional[dt.datetime]]
 
     url: Mapped['Url'] = relationship(back_populates='scans')
     provider_scans: Mapped[list['ProviderScan']] = relationship(
