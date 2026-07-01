@@ -20,3 +20,19 @@ class UrlDTO(BaseModel):
     verdict: Verdict
     verdict_confidence: float = Field(ge=0.0, le=1.0)
     last_scanned_at: Optional[dt.datetime] = None
+
+
+class UrlCreateDTO(BaseModel):
+    """Data Transfer Object for Url creation."""
+
+    domain_id: int
+    url_hash: str = Field(min_length=64, max_length=64)
+    full_url: str
+
+
+class UrlUpdateLastScanDTO(BaseModel):
+    """Data Transfer Object for updating Url security scan results."""
+
+    verdict: Verdict
+    verdict_confidence: float = Field(ge=0.0, le=1.0)
+    last_scanned_at: dt.datetime

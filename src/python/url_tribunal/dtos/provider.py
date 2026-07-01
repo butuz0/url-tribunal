@@ -1,4 +1,7 @@
-from typing import Any, Optional
+"""Data Transfer Objects for third-party security scan providers."""
+
+from typing import Any
+
 from pydantic import BaseModel, ConfigDict
 
 from url_tribunal.core.enums import Verdict
