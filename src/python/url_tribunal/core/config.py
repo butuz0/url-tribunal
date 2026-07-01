@@ -22,6 +22,20 @@ class ProvidersSettings(BaseSettings):
     urlscan_api_key: str
 
 
+class CelerySettings(BaseSettings):
+    """Celery configuration."""
+
+    model_config = SettingsConfigDict(env_prefix='CELERY_')
+
+    broker_url: str
+    result_backend: str
+    task_serializer: str = 'json'
+    result_serializer: str = 'json'
+    accept_content: list[str] = ['json']
+    worker_max_tasks_per_child: int = 1000
+    result_chord_join_timeout: float = 600.0
+
+
 class DBSettings(BaseSettings):
     """Database connection settings."""
 
@@ -46,6 +60,7 @@ class Settings(BaseSettings):
 
     flask: FlaskSettings = Field(default_factory=FlaskSettings)
     db: DBSettings = Field(default_factory=DBSettings)
+    celery: CelerySettings = Field(default_factory=CelerySettings)
     providers: ProvidersSettings = Field(default_factory=ProvidersSettings)
 
 

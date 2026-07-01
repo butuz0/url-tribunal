@@ -1,3 +1,20 @@
+x-api-base: &api_base
+  build:
+    context: .
+    dockerfile: api.Dockerfile
+  restart: unless-stopped
+  env_file:
+    - .env
+  volumes:
+    - ./src/python/url_tribunal:/app/url_tribunal
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  networks:
+    - url-tribunal-nw
+
 services:
   db:
     image: mysql:8.4.10
@@ -21,27 +38,72 @@ services:
     networks:
       - url-tribunal-nw
 
+  redis:
+    image: redis:8.0-alpine3.21
+    command: redis-server --appendonly yes
+    container_name: redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - url-tribunal-nw
+
   api:
-    build:
-      context: .
-      dockerfile: api.Dockerfile
+    <<: *api_base
     image: url-tribunal-api
     container_name: api
-    restart: unless-stopped
-    env_file:
-      - .env
     ports:
       - "8000:8000"
+
+  worker:
+    <<: *api_base
+    image: url-tribunal-worker
+    container_name: worker
+    command:
+      - "celery"
+      - "-A"
+      - "url_tribunal.core.celery"
+      - "worker"
+      - "-l"
+      - "INFO"
+      - "--pool=threads"
+      - "--concurrency=${CELERY_CONCURRENCY:-8}"
+
+  flower:
+    image: mher/flower:2.0
+    container_name: flower
+    environment:
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_FLOWER_USER: ${CELERY_FLOWER_USER}
+      CELERY_FLOWER_PASSWORD: ${CELERY_FLOWER_PASSWORD}
+    command:
+      - "celery"
+      - "--broker=${CELERY_BROKER_URL}"
+      - "flower"
+      - "--port=5555"
+      - "--basic_auth=${CELERY_FLOWER_USER}:${CELERY_FLOWER_PASSWORD}"
+      - "--persistent=true"
+      - "--db=/data/flower.db"
     volumes:
-      - ./src/python/url_tribunal:/app/url_tribunal
+      - flower_data:/data
+    ports:
+      - "5555:5555"
     depends_on:
-      db:
+      redis:
         condition: service_healthy
     networks:
       - url-tribunal-nw
 
 volumes:
   db_data:
+  redis_data:
+  flower_data:
 
 networks:
   url-tribunal-nw:
