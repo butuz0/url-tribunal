@@ -4,7 +4,7 @@ from typing import Any
 
 from requests import HTTPError
 
-from url_tribunal.core.enums import Verdict
+from url_tribunal.core.enums import ProviderName, Verdict
 from url_tribunal.dtos import ProviderScanResultDTO
 from url_tribunal.providers.base import BaseHTTPProvider
 from url_tribunal.providers.exceptions import (
@@ -16,7 +16,7 @@ from url_tribunal.providers.exceptions import (
 class UrlScanProvider(BaseHTTPProvider):
     """Security scan client for urlscan.io V1 API."""
 
-    provider_name = 'urlscan.io'
+    provider_name = ProviderName.URLSCAN
     weight = 1
     base_url = 'https://urlscan.io/api/v1'
     _malicious_score_threshold = 65

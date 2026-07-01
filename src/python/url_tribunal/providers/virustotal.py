@@ -4,7 +4,7 @@ from typing import Any
 
 from requests import HTTPError
 
-from url_tribunal.core.enums import Verdict
+from url_tribunal.core.enums import ProviderName, Verdict
 from url_tribunal.dtos import ProviderScanResultDTO
 from url_tribunal.providers.base import BaseHTTPProvider
 from url_tribunal.providers.exceptions import (
@@ -16,7 +16,7 @@ from url_tribunal.providers.exceptions import (
 class VirusTotalProvider(BaseHTTPProvider):
     """Security scan client for VirusTotal V3 API."""
 
-    provider_name = 'virustotal.io'
+    provider_name = ProviderName.VIRUSTOTAL
     weight = 1
     base_url = 'https://www.virustotal.com/api/v3'
     _scan_ready_status = 'completed'

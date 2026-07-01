@@ -3,6 +3,13 @@
 from enum import StrEnum
 
 
+class ProviderName(StrEnum):
+    """Supported security scan providers."""
+
+    URLSCAN = 'urlscan'
+    VIRUSTOTAL = 'virustotal'
+
+
 class Verdict(StrEnum):
     """Security scan results for URLs and domains."""
 

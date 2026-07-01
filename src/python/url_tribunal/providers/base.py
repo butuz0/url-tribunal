@@ -6,13 +6,14 @@ from typing import Any, ClassVar, Optional
 import requests
 from requests import Response
 
+from url_tribunal.core.enums import ProviderName
 from url_tribunal.dtos import ProviderScanResultDTO
 
 
 class BaseProvider(ABC):
     """Abstract base class for all external security scan APIs."""
 
-    provider_name: ClassVar[str]
+    provider_name: ClassVar[ProviderName]
     weight: ClassVar[float]
 
     @abstractmethod
