@@ -24,17 +24,13 @@ def create_app(settings: Optional[Settings] = None) -> Flask:
 
     init_database(settings.db)
 
-    @app.teardown_appcontext
-    def shutdown_session(exception=None) -> None:
-        pass
-
-    @app.get('/health/')
-    def health() -> tuple[dict, int]:
-        return {'status': 'ok'}, 200
-
     register_error_handlers(app)
 
     app.register_blueprint(url_bp)
     app.register_blueprint(scan_bp)
+
+    @app.get('/health/')
+    def health() -> tuple[dict, int]:
+        return {'status': 'ok'}, 200
 
     return app
