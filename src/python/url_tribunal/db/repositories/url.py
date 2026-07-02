@@ -35,6 +35,7 @@ class UrlRepository:
             update(Url)
             .where(Url.id == url_id)
             .values(
+                last_scan_id=data.last_scan_id,
                 verdict=data.verdict,
                 verdict_confidence=data.verdict_confidence,
                 last_scanned_at=data.last_scanned_at,

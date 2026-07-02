@@ -78,7 +78,7 @@ class ScanRepository:
 
         stmt = (
             select(Scan)
-            .join(Url)
+            .join(Url, Url.id == Scan.url_id)
             .where(Url.url_hash == url_hash)
             .order_by(Scan.scanned_at.desc())
         )

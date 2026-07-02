@@ -19,6 +19,9 @@ class Url(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     domain_id: Mapped[int] = mapped_column(ForeignKey('domain.id', ondelete='CASCADE'))
+    last_scan_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey('scan.id', ondelete='SET NULL'),
+    )
 
     url_hash: Mapped[str] = mapped_column(String(64), unique=True)
     full_url: Mapped[str] = mapped_column(Text)
@@ -42,5 +45,6 @@ class Url(Base):
     domain: Mapped['Domain'] = relationship(back_populates='urls')
     scans: Mapped[list['Scan']] = relationship(
         back_populates='url',
+        foreign_keys='Scan.url_id',
         cascade='all, delete-orphan',
     )

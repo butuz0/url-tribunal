@@ -48,7 +48,10 @@ class Scan(Base):
     )
     scanned_at: Mapped[Optional[dt.datetime]]
 
-    url: Mapped['Url'] = relationship(back_populates='scans')
+    url: Mapped['Url'] = relationship(
+        back_populates='scans',
+        foreign_keys='Scan.url_id',
+    )
     provider_scans: Mapped[list['ProviderScan']] = relationship(
         back_populates='scan',
         cascade='all, delete-orphan',

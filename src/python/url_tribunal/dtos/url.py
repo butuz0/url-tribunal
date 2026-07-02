@@ -3,7 +3,7 @@
 import datetime as dt
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 from url_tribunal.core.enums import Verdict
 
@@ -15,6 +15,7 @@ class UrlDTO(BaseModel):
 
     id: int
     domain_id: int
+    last_scan_id: Optional[int] = None
     url_hash: str = Field(min_length=64, max_length=64)
     full_url: str
     verdict: Verdict
@@ -33,6 +34,7 @@ class UrlCreateDTO(BaseModel):
 class UrlUpdateLastScanDTO(BaseModel):
     """Data Transfer Object for updating Url security scan results."""
 
+    last_scan_id: int
     verdict: Verdict
     verdict_confidence: float = Field(ge=0.0, le=1.0)
     last_scanned_at: dt.datetime

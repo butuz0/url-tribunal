@@ -14,6 +14,8 @@ class UrlSchema(BaseModel):
     model_config = ConfigDict(frozen=True, from_attributes=True)
 
     id: int
+    domain_id: int
+    last_scan_id: Optional[int] = None
     url_hash: str
     full_url: str
     verdict: Verdict
