@@ -24,6 +24,15 @@ def init_database(settings: DBSettings) -> None:
     _session_factory = _create_sync_session_factory(db)
 
 
+def create_db_session() -> Session:
+    """Create and return a database session from the global session factory."""
+
+    if _session_factory is None:
+        raise RuntimeError('Database session factory is not initialized.')
+
+    return _session_factory()
+
+
 @contextmanager
 def get_db_session() -> Generator[Session, None, None]:
     """Yield a database session from the global session factory."""

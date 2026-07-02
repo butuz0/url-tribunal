@@ -4,6 +4,7 @@ from typing import Optional
 
 from flask import Flask
 
+from url_tribunal.api.v1.dependencies import close_flask_db_session
 from url_tribunal.api.v1.errors import register_error_handlers
 from url_tribunal.api.v1.views.scan import scan_bp
 from url_tribunal.api.v1.views.url import url_bp
@@ -24,6 +25,7 @@ def create_app(settings: Optional[Settings] = None) -> Flask:
 
     init_database(settings.db)
 
+    app.teardown_request(close_flask_db_session)
     register_error_handlers(app)
 
     app.register_blueprint(url_bp)
